@@ -40,10 +40,9 @@ public class CSVReader {
 
     public List<String> readFile(Path path) {
         List<String> rsl = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(path.toString()))) {
-            var line = "";
-            while ((line = reader.readLine()) != null) {
-                rsl.add(line);
+        try(Scanner scanner = new Scanner(path)) {
+            while (scanner.hasNext()) {
+                rsl.add(scanner.nextLine());
             }
         } catch (Exception e) {
             e.printStackTrace();
