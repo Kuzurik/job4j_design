@@ -6,12 +6,6 @@ import java.util.*;
 
 public class CSVReader {
 
-    private final String[] args;
-
-    public CSVReader(String[] args) {
-        this.args = args;
-    }
-
     private List<String> parseArgs(String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException();
@@ -37,20 +31,6 @@ public class CSVReader {
         return rsl;
     }
 
-
-    public List<String> readFile(Path path) {
-        List<String> rsl = new ArrayList<>();
-        try(Scanner scanner = new Scanner(path)) {
-            while (scanner.hasNext()) {
-                rsl.add(scanner.nextLine());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return rsl;
-    }
-
     public List<Integer> findIndex(String line, String[] filters, String delimiter) {
         List<Integer> indexes = new ArrayList<>();
         List<String> values = parseStr(line, delimiter);
@@ -60,44 +40,52 @@ public class CSVReader {
         return indexes;
     }
 
-    public StringBuilder parseColumn(List<String> content, List<Integer> indexes, String delimiter) {
-        StringBuilder rsl = new StringBuilder();
-        for (String line : content) {
-            List<String> values = parseStr(line, delimiter);
+    public String parseColumn(List<String> content, List<Integer> indexes, String delimiter) {
+       StringBuilder rsl = new StringBuilder();
             for (Integer index : indexes) {
-                rsl.append(values.get(index))
+                rsl.append(content.get(index))
                         .append(delimiter);
             }
-            rsl.append(System.lineSeparator());
-        }
 
-        return rsl;
+        return rsl.toString();
     }
 
-    public void writer(StringBuilder stringBuilder, String out) {
+    public void writer(String line, String out) {
         if (out.equals("stdout")) {
-            System.out.println(stringBuilder);
+            System.out.println(line);
         } else {
             try (PrintWriter outer = new PrintWriter(
                     new BufferedOutputStream(
                             new FileOutputStream(out)
                     ))) {
-                outer.print(stringBuilder);
+                outer.println(line);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void execute() {
-        List<String> args = parseArgs(this.args);
-        String delimiter = args.get(1);
-        List<String> rsl = this.readFile(Path.of(args.get(0)));
-        List<Integer> indexes = findIndex(rsl.get(0), args.get(3).split(","), delimiter);
-        StringBuilder stringBuilder = this.parseColumn(rsl, indexes, delimiter);
-        this.writer(stringBuilder, args.get(2));
+    public void execute(String[] args) {
+        List<String> argsParse = this.parseArgs(args);
+        String delimiter = argsParse.get(1);
+        try(Scanner input = new Scanner(Path.of(argsParse.get(0)));
+            PrintWriter outer = new PrintWriter(
+                    new BufferedOutputStream(
+                            new FileOutputStream(argsParse.get(2))))) {
+            List<Integer> indexes = findIndex(input.nextLine(), argsParse.get(3).split(","), delimiter);
+            while (input.hasNext()) {
+                List<String> line = this.parseStr(input.nextLine(), delimiter);
+                String str = this.parseColumn(line, indexes, delimiter);
+                if (argsParse.get(2).equals("stdout")) {
+                    System.out.println(str);
+                } else {
+                        outer.println(str);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 
 
     public static void main(String[] args) {
@@ -105,6 +93,6 @@ public class CSVReader {
             throw new IllegalArgumentException("Illegal argument. Usage java -jar dir.jar -path=file path -delimiter=\"delimiter\"" +
                     "  -out=stdout -filter=column name.");
         }
-        new CSVReader(args).execute();
+        new CSVReader().execute(args);
     }
 }
