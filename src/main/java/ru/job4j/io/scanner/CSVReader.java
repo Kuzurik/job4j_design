@@ -50,21 +50,6 @@ public class CSVReader {
         return rsl.toString();
     }
 
-    public void writer(String line, String out) {
-        if (out.equals("stdout")) {
-            System.out.println(line);
-        } else {
-            try (PrintWriter outer = new PrintWriter(
-                    new BufferedOutputStream(
-                            new FileOutputStream(out)
-                    ))) {
-                outer.println(line);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void execute(String[] args) {
         List<String> argsParse = this.parseArgs(args);
         String delimiter = argsParse.get(1);
@@ -86,7 +71,6 @@ public class CSVReader {
             e.printStackTrace();
         }
     }
-
 
     public static void main(String[] args) {
         if (args.length < 4) {
