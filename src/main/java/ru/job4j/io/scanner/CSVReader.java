@@ -53,7 +53,7 @@ public class CSVReader {
     public void execute(String[] args) {
         List<String> argsParse = this.parseArgs(args);
         String delimiter = argsParse.get(1);
-        try(Scanner input = new Scanner(Path.of(argsParse.get(0)));
+        try (Scanner input = new Scanner(Path.of(argsParse.get(0)));
             PrintWriter outer = new PrintWriter(
                     new BufferedOutputStream(
                             new FileOutputStream(argsParse.get(2))))) {
@@ -74,8 +74,8 @@ public class CSVReader {
 
     public static void main(String[] args) {
         if (args.length < 4) {
-            throw new IllegalArgumentException("Illegal argument. Usage java -jar dir.jar -path=file path -delimiter=\"delimiter\"" +
-                    "  -out=stdout -filter=column name.");
+            throw new IllegalArgumentException("Illegal argument. Usage java -jar dir.jar -path=file path -delimiter=\"delimiter\""
+                    + "  -out=stdout -filter=column name.");
         }
         new CSVReader().execute(args);
     }

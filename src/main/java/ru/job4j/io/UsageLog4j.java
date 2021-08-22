@@ -18,8 +18,8 @@ public class UsageLog4j {
         double d = 4.25;
         boolean bool = true;
 
-        LOG.debug("byte = {}, short = {}, char = {}, int = {}" +
-                        ", long = {}, float = {}, double = {}, boolean = {}",
+        LOG.debug("byte = {}, short = {}, char = {}, int = {}"
+                        + ", long = {}, float = {}, double = {}, boolean = {}",
                         b, s, c, i, l, f, d, bool);
 
     }
