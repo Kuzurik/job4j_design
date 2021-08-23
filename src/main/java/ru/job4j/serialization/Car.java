@@ -3,15 +3,33 @@ package ru.job4j.serialization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.*;
+import java.io.StringWriter;
 import java.util.Arrays;
 
+@XmlRootElement(name = "car")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Car {
 
-    private final boolean go;
-    private final double volume;
-    private final String name;
-    private final Engine engine;
-    private final String[] places;
+    @XmlAttribute
+    private boolean go;
+
+    @XmlAttribute
+    private double volume;
+
+    @XmlAttribute
+    private String name;
+
+    private Engine engine;
+
+    @XmlElementWrapper(name = "statuses")
+    @XmlElement(name = "status")
+    private String[] places;
+
+    public Car() { }
 
     public Car(boolean go, double volume, String name, Engine engine, String[] places) {
         this.go = go;
@@ -32,21 +50,19 @@ public class Car {
                 + '}';
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         Car car = new Car(false, 2.3, "mazda",
-                new Engine("ST1343412312"), new String[]{"driver","passenger next to the driver"});
-        final Gson gson = new GsonBuilder().create();
-        System.out.println(gson.toJson(car));
+                new Engine("ST1343412312"), new String[]{"driver", "passenger next to the driver"});
+        JAXBContext context = JAXBContext.newInstance(Car.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-        final String carJson =
-                "{\"go\":false,"
-                        + "\"volume\":2.3,"
-                        + "\"name\":\"mazda\","
-                        + "\"engine\":{\"vin\":\"ST1343412312\"},"
-                        + "\"places\":[\"driver\",\"passenger next to the driver\"]"
-                        + "}";
-
-        final Car carMod = gson.fromJson(carJson, Car.class);
-        System.out.println(carMod);
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(car, writer);
+            String result = writer.getBuffer().toString();
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
