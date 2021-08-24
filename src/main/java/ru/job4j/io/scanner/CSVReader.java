@@ -23,11 +23,15 @@ public class CSVReader {
 
     public List<String> parseStr(String line, String delimiter) {
         List<String> rsl = new ArrayList<>();
-        var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
-                .useDelimiter(delimiter);
-        while (scanner.hasNext()) {
-            rsl.add(scanner.next());
+        try (var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
+                .useDelimiter(delimiter)) {
+            while (scanner.hasNext()) {
+                rsl.add(scanner.next());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return rsl;
     }
 
