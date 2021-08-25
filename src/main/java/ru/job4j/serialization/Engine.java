@@ -15,8 +15,8 @@ public class Engine {
 
     @Override
     public String toString() {
-        return "Engine{" +
-                "vin='" + vin + '\''
+        return "Engine{"
+                + "vin='" + vin + '\''
                 + '}';
     }
 }
