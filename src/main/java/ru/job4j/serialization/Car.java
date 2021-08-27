@@ -39,6 +39,46 @@ public class Car {
         this.places = places;
     }
 
+    public boolean isGo() {
+        return go;
+    }
+
+    public void setGo(boolean go) {
+        this.go = go;
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public String[] getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(String[] places) {
+        this.places = places;
+    }
+
     @Override
     public String toString() {
         return "Car{"
