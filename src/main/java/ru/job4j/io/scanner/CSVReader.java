@@ -6,19 +6,19 @@ import java.util.*;
 
 public class CSVReader {
 
-    private List<String> parseArgs(String[] args) {
+    private Args parseArgs(String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException();
         }
-        List<String> rsl = new ArrayList<>();
-        for (String str : args) {
-            String[] value = str.split("=");
-            if (value.length <= 1) {
-                throw new IllegalArgumentException();
-            }
-            rsl.add(value[1]);
+        return new Args(parseArg(args[0]), parseArg(args[1]), parseArg(args[2]), parseArg(args[3]));
+    }
+
+    private String parseArg(String arg) {
+        String[] value = arg.split("=");
+        if (value.length <= 1) {
+            throw new IllegalArgumentException();
         }
-        return rsl;
+        return value[1];
     }
 
     public List<String> parseStr(String line, String delimiter) {
@@ -54,18 +54,17 @@ public class CSVReader {
         return rsl.toString();
     }
 
-    public void execute(String[] args) {
-        List<String> argsParse = this.parseArgs(args);
-        String delimiter = argsParse.get(1);
-        try (Scanner input = new Scanner(Path.of(argsParse.get(0)));
+    public void execute(String[] arguments) {
+        Args args = this.parseArgs(arguments);
+        try (Scanner input = new Scanner(Path.of(args.getPath()));
             PrintWriter outer = new PrintWriter(
                     new BufferedOutputStream(
-                            new FileOutputStream(argsParse.get(2))))) {
-            List<Integer> indexes = findIndex(input.nextLine(), argsParse.get(3).split(","), delimiter);
+                            new FileOutputStream(args.getOut())))) {
+            List<Integer> indexes = findIndex(input.nextLine(), args.getFilter().split(","), args.getDelimiter());
             while (input.hasNext()) {
-                List<String> line = this.parseStr(input.nextLine(), delimiter);
-                String str = this.parseColumn(line, indexes, delimiter);
-                if (argsParse.get(2).equals("stdout")) {
+                List<String> line = this.parseStr(input.nextLine(), args.getDelimiter());
+                String str = this.parseColumn(line, indexes, args.getDelimiter());
+                if (args.getOut().equals("stdout")) {
                     System.out.println(str);
                 } else {
                         outer.println(str);
