@@ -6,22 +6,7 @@ import java.util.*;
 
 public class CSVReader {
 
-    private Args parseArgs(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException();
-        }
-        return new Args(parseArg(args[0]), parseArg(args[1]), parseArg(args[2]), parseArg(args[3]));
-    }
-
-    private String parseArg(String arg) {
-        String[] value = arg.split("=");
-        if (value.length <= 1) {
-            throw new IllegalArgumentException();
-        }
-        return value[1];
-    }
-
-    public List<String> parseStr(String line, String delimiter) {
+     public List<String> parseStr(String line, String delimiter) {
         List<String> rsl = new ArrayList<>();
         try (var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
                 .useDelimiter(delimiter)) {
@@ -55,7 +40,8 @@ public class CSVReader {
     }
 
     public void execute(String[] arguments) {
-        Args args = this.parseArgs(arguments);
+        Args args = new Args();
+        args.of(arguments);
         try (Scanner input = new Scanner(Path.of(args.getPath()));
             PrintWriter outer = new PrintWriter(
                     new BufferedOutputStream(
