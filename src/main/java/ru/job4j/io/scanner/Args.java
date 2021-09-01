@@ -8,8 +8,8 @@ public class Args {
     private String filter;
 
     public void of(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException();
+        if (args.length != 4) {
+            throw new IllegalArgumentException("Wrong number of arguments");
         }
         this.path = parseArg(args[0]);
         this.delimiter = parseArg(args[1]);
@@ -19,8 +19,8 @@ public class Args {
 
     private String parseArg(String arg) {
         String[] value = arg.split("=");
-        if (value.length <= 1) {
-            throw new IllegalArgumentException();
+        if (value.length != 2) {
+            throw new IllegalArgumentException("Invalid argument format" + ":" + " " + arg);
         }
         return value[1];
     }
