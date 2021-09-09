@@ -1,10 +1,10 @@
 create table country(
-    id serial primary key UNIQUE,
+    id serial primary key,
     name varchar(255)
 );
 
 create table capital(
-    id serial primary key UNIQUE,
+    id serial primary key,
     name varchar(255)
 )
 
