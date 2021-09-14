@@ -1,0 +1,3 @@
+Petr Arsentev;parsentev@yandex.ru;
+Ivan Ivanov;ivanov@gmail.com;
+Alex Kuzura;alex.beltexno@gmail.com;
