@@ -32,52 +32,35 @@ public class TableEditor implements AutoCloseable {
         }
     }
 
-    public void createTable(String tableName) {
+    public void query(String query) {
         try (Statement st = cn.createStatement()) {
-            String sql = String.format("create table if not exists %s();", tableName);
-            st.execute(sql);
+            st.execute(query);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void createTable(String tableName) {
+        query(String.format("create table if not exists %s();", tableName));
     }
 
     public void dropTable(String tableName) {
-        try (Statement st = cn.createStatement()) {
-            String sql = String.format("drop table if exists %s;", tableName);
-            st.execute(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        query(String.format("drop table if exists %s;", tableName));
     }
 
     public void addColumn(String tableName, String columnName, String type) {
-        try (Statement st = cn.createStatement()) {
-            String sql = String.format("alter table %s add column %s %s;",
-                    tableName, columnName, type);
-            st.execute(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        query(String.format("alter table %s add column %s %s;",
+                tableName, columnName, type));
     }
 
     public void dropColumn(String tableName, String columnName) {
-        try (Statement st = cn.createStatement()) {
-            String sql = String.format("alter table %s drop column %s;",
-                    tableName, columnName);
-            st.execute(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        query(String.format("alter table %s drop column %s;",
+                tableName, columnName));
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
-        try (Statement st = cn.createStatement()) {
-            String sql = String.format("alter table %s rename column %s to %s;",
-                    tableName, columnName, newColumnName);
-            st.execute(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        query(String.format("alter table %s rename column %s to %s;",
+                tableName, columnName, newColumnName));
     }
 
 
