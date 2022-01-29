@@ -13,7 +13,7 @@ public class Compare {
         if (first.size() != second.size()) {
             return false;
         }
-        for(int i = 0; i != first.size(); i++) {
+        for (int i = 0; i != first.size(); i++) {
             if (!first.contains(second.get(i)) || !second.contains(first.get(i))) {
                 return false;
             }
