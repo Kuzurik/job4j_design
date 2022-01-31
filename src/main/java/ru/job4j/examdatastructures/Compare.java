@@ -1,7 +1,9 @@
 package ru.job4j.examdatastructures;
 
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 
@@ -25,5 +27,22 @@ public class Compare {
         TreeSet<String> first = new TreeSet<>(asList(firstWord.split("")));
         TreeSet<String> second = new TreeSet<>(asList(secondWord.split("")));
         return first.equals(second);
+    }
+
+    public static boolean compareByMap(String firstWord, String secondWord) {
+        if (firstWord.length() != secondWord.length()) {
+            return false;
+        }
+        Map<String, String> words = IntStream.range(0, firstWord.length())
+                .collect(HashMap::new,
+                        ((m, i)-> m.put(String.valueOf(firstWord.charAt(i)),
+                                String.valueOf(secondWord.charAt(i)))), Map::putAll);
+        for (int i = 0; i != words.size(); i++) {
+            if (!words.containsKey(String.valueOf(firstWord.charAt(i)))
+                    || !words.containsValue(String.valueOf(secondWord.charAt(i)))) {
+                return false;
+            }
+        }
+                return true;
     }
 }
