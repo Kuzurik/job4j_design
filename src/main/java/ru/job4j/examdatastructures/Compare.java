@@ -33,10 +33,11 @@ public class Compare {
         if (firstWord.length() != secondWord.length()) {
             return false;
         }
-        Map<String, String> words = IntStream.range(0, firstWord.length())
-                .collect(HashMap::new,
-                        ((m, i)-> m.put(String.valueOf(firstWord.charAt(i)),
-                                String.valueOf(secondWord.charAt(i)))), Map::putAll);
+        Map<String, String> words = new HashMap<>();
+        for (int i = 0; i != firstWord.length(); i++) {
+            words.putIfAbsent(String.valueOf(firstWord.charAt(i)),
+                    String.valueOf(secondWord.charAt(i)));
+        }
         for (int i = 0; i != words.size(); i++) {
             if (!words.containsKey(String.valueOf(firstWord.charAt(i)))
                     || !words.containsValue(String.valueOf(secondWord.charAt(i)))) {
