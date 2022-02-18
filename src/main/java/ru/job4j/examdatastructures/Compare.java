@@ -1,9 +1,6 @@
 package ru.job4j.examdatastructures;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 
@@ -33,14 +30,15 @@ public class Compare {
         if (firstWord.length() != secondWord.length()) {
             return false;
         }
-        Map<String, String> words = new HashMap<>();
+        Map<Integer, String> oneWord = new HashMap<>();
+        Map<Integer, String> twoWord = new HashMap<>();
         for (int i = 0; i != firstWord.length(); i++) {
-            words.putIfAbsent(String.valueOf(firstWord.charAt(i)),
-                    String.valueOf(secondWord.charAt(i)));
+            oneWord.putIfAbsent(i, String.valueOf(firstWord.charAt(i)));
+            twoWord.putIfAbsent(i, String.valueOf(secondWord.charAt(i)));
         }
-        for (int i = 0; i != words.size(); i++) {
-            if (!words.containsKey(String.valueOf(firstWord.charAt(i)))
-                    || !words.containsValue(String.valueOf(secondWord.charAt(i)))) {
+        for (int i = 0; i != oneWord.size(); i++) {
+            if (!oneWord.containsValue(twoWord.get(i))
+                    || !twoWord.containsValue(oneWord.get(i))) {
                 return false;
             }
         }

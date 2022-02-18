@@ -58,7 +58,7 @@ public class CompareTest {
 
     @Test
     public void whenCompareByMapDifferentWordsThanTrue() {
-        boolean result = compareByTree("seven", "sevet");
+        boolean result = compareByMap("seven", "sevet");
         assertThat(result, is(false));
     }
 }
