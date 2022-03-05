@@ -15,23 +15,17 @@ public class Main {
     public static void main(String[] args) throws JAXBException, IOException {
         Car car = new Car(false, 2.3, "mazda",
                 new Engine("ST1343412312"), new String[]{"driver", "passenger next to the driver"});
-        // Получаем контекст для доступа к АПИ
         JAXBContext context = JAXBContext.newInstance(Car.class);
-        // Создаем сериализатор
         Marshaller marshaller = context.createMarshaller();
-        // Указываем, что нам нужно форматирование
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        String xml = "";
+        String xml;
         try (StringWriter writer = new StringWriter()) {
-            // Сериализуем
             marshaller.marshal(car, writer);
             xml = writer.getBuffer().toString();
             System.out.println(xml);
         }
-        // Для десериализации нам нужно создать десериализатор
         Unmarshaller unmarshaller = context.createUnmarshaller();
         try (StringReader reader = new StringReader(xml)) {
-            // десериализуем
             Car result = (Car) unmarshaller.unmarshal(reader);
             System.out.println(result);
         }
