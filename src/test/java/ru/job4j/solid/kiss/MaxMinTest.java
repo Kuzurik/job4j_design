@@ -1,4 +1,5 @@
-package ru.job4j.SOLID.kiss;
+package ru.job4j.solid.kiss;
+
 
 import org.junit.Test;
 
