@@ -42,14 +42,14 @@ class BoxTest {
     }
 
     @Test
-    void NumberOfVerticesNull() {
+    void numberOfVerticesNull() {
         Box box = new Box(0, 10);
         int result = box.getNumberOfVertices();
         assertThat(result).isEqualTo(0);
     }
 
     @Test
-    void NumberOfVerticesEight() {
+    void numberOfVerticesEight() {
         Box box = new Box(8, 10);
         int result = box.getNumberOfVertices();
         assertThat(result).isEqualTo(8);
